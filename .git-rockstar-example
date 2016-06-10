@@ -1,0 +1,10 @@
+{
+    "ignore-dir" : [ "test", "build" ],
+    "ignore-file-pattern" : [ ".bak", "~" ],
+    "ignore-revert" : "1",
+    "author-alias" : {
+            "Linus" : "Linus Torvalds",
+            "linus" : "Linus Torvalds",
+            "larry" : "Larry Wall",
+    }
+}
