@@ -1,0 +1,31 @@
+#!/bin/bash
+
+DIR=$( dirname $0 )
+$DIR/configure > /dev/null
+STATUS=$?
+if [ "$STATUS" -ne 0 ]; then
+    echo "Cannot run git-rockstar!"
+    exit 1;
+fi
+source $DIR/.config 
+
+GIT_REPO=$1
+GIT_ROCKSTAR_CONFIG=$2
+
+$PERL $DIR/collect_git_stats.pl $GIT_REPO $GIT_ROCKSTAR_CONFIG 2> $DIR/.git_rockstar_error > $DIR/.git_rockstar_output
+STATUS=$?
+if [ "$STATUS" -ne 0 ]; then
+    echo "Problems running collect_git_stats.pl!"
+    cat $DIR/.git_rockstar_error
+    exit 1;
+fi
+
+$RSCRIPT $DIR/create_graph.R $DIR/.git_rockstar_output 2> $DIR/.git_rockstar_error2 > $DIR/.git_rockstar_output2
+STATUS=$?
+if [ "$STATUS" -ne 0 ]; then
+    echo "Problems running create_graph.R!"
+    cat $DIR/.git_rockstar_error2
+    exit 1;
+fi
+
+echo "Create PDF: $DIR/git_rockstar.pdf"
