@@ -1,0 +1,23 @@
+#!/bin/bash
+
+CONFIG="./.config"
+echo '# Installed Paths for Dependent Programs' > $CONFIG
+
+function check_installed {
+    PROG=$1
+    echo "Checking for '$PROG'"
+    LOC=$( which $PROG )
+    if [ -z "$LOC" ]; then
+        echo "Need to install '$PROG'"
+        exit 1;
+    else
+        echo "==> $LOC"
+    fi
+    echo "${PROG^^}=$LOC" >> $CONFIG
+}
+
+for prog in perl R Rscript xargs git; do
+    check_installed $prog
+done
+
+echo "Created $CONFIG"
