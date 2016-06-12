@@ -34,7 +34,20 @@ ERR2=$DIR/.git_rockstar_error2
 echo '' > $OUT2
 echo '' > $ERR2
 
-$RSCRIPT $DIR/create_graph.R $OUT 2> $ERR2 > $OUT2
+LABEL=""
+GITHUB=$( cd $GIT_REPO; git config -l | /bin/grep github )
+if [ -z "$GITHUB" ]; then
+    # Not on github
+    LABEL=$( basename $GIT_REPO )
+else
+    NAME=$( echo $GITHUB | sed -e 's|^.*github.com[/:]||;' )
+    SHORT_NAME=$( echo $NAME | sed -e 's|.git$||;' )
+    LABEL="Github [ $SHORT_NAME ]"
+fi
+
+echo $LABEL
+exit 1;
+$RSCRIPT $DIR/create_graph.R $OUT $LABEL 2> $ERR2 > $OUT2
 STATUS=$?
 if [ "$STATUS" -ne 0 ]; then
     echo "Problems running create_graph.R!"
