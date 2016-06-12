@@ -59,15 +59,15 @@ while (<$fh>) {
 close $fh;
 process_not_in_master($record); # Last one
 
+print join ':', 'author', 'date', 'changes_in_master', 'changes_not_in_master',
+    'total_in_master', 'total_not_in_master', 'total', 'percent_in_master';
+print "\n";
 for my $author ( sort keys %$data ) {
     my $d = $data->{$author};
     my $total_in_master = 0;
     my $total_not_in_master = 0;
     my $total = 0;
     my $percent_in_master = 0;
-    print join ':', 'author', 'date', 'changes_in_master', 'changes_not_in_master',
-    'total_in_master', 'total_not_in_master', 'total', 'percent_in_master';
-    print "\n";
     for my $date (uniq sort (keys %{$d->{master}}, keys %{$d->{not_master}})) {
         my $master     = $d->{master}->{$date} || 0;
         my $not_master = $d->{not_master}->{$date} || 0;
