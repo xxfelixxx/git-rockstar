@@ -16,16 +16,25 @@ if [ -z "$GIT_REPO" ]; then
     exit 1;
 fi
 
+OUT=$DIR/.git_rockstar_output
+ERR=$DIR/.git_rockstar_error
+echo '' > $OUT
+echo '' > $ERR
 
-$PERL $DIR/collect_git_stats.pl $GIT_REPO $GIT_ROCKSTAR_CONFIG 2> $DIR/.git_rockstar_error > $DIR/.git_rockstar_output
+$PERL $DIR/collect_git_stats.pl $GIT_REPO $GIT_ROCKSTAR_CONFIG 2> $ERR > $OUT
 STATUS=$?
 if [ "$STATUS" -ne 0 ]; then
     echo "Problems running collect_git_stats.pl!"
-    cat $DIR/.git_rockstar_error
+    cat $ERR
     exit 1;
 fi
 
-$RSCRIPT $DIR/create_graph.R $DIR/.git_rockstar_output 2> $DIR/.git_rockstar_error2 > $DIR/.git_rockstar_output2
+OUT2=$DIR/.git_rockstar_output2
+ERR2=$DIR/.git_rockstar_error2
+echo '' > $OUT2
+echo '' > $ERR2
+
+$RSCRIPT $DIR/create_graph.R $OUT 2> $ERR2 > $OUT2
 STATUS=$?
 if [ "$STATUS" -ne 0 ]; then
     echo "Problems running create_graph.R!"
@@ -33,4 +42,5 @@ if [ "$STATUS" -ne 0 ]; then
     exit 1;
 fi
 
-echo "Create PDF: $DIR/git_rockstar.pdf"
+rm $OUT $OUT2 $ERR $ERR2
+echo "Created PDF: $DIR/git_rockstar.pdf"
