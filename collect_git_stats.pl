@@ -59,7 +59,7 @@ while (<$fh>) {
 close $fh;
 process_not_in_master($record); # Last one
 
-print join ':', 'author', 'date', 'changes_in_master', 'changes_not_in_master',
+print join "\t", 'author', 'date', 'changes_in_master', 'changes_not_in_master',
     'total_in_master', 'total_not_in_master', 'total', 'percent_in_master';
 print "\n";
 for my $author ( sort keys %$data ) {
@@ -80,7 +80,7 @@ for my $author ( sort keys %$data ) {
         } else {
             $percent_in_master = int ( $total_in_master / $total * 100 );
         }
-        print join ':', $author, $date,$master, $not_master, $total_in_master, $total_not_in_master, $total, $percent_in_master;
+        print join "\t", $author, $date,$master, $not_master, $total_in_master, $total_not_in_master, $total, $percent_in_master;
         print "\n";
     }
 }

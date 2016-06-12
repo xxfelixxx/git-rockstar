@@ -25,7 +25,7 @@ if ( is.na( filename) || is.na( git_repo_title ) ) {
 git_repo_title <- gsub("'", "", git_repo_title)
 
 # Fetch data
-d <- read.csv( filename, head = TRUE, sep=":" )
+d <- read.csv( filename, head = TRUE, sep="\t" )
 
 d$date <- as.Date( d$date, "%Y-%m-%d" )
 
