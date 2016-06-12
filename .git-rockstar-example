@@ -7,4 +7,5 @@
             "linus" : "Linus Torvalds",
             "larry" : "Larry Wall",
     }
+    "authors-to-skip" : [ "robot_user", "auto_commit_user" ],
 }

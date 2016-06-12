@@ -175,6 +175,7 @@ sub validate_config {
         'ignore-file-pattern' => { type => 'ARRAY' },
         'ignore-revert'       => { type => ''      },
         'author-alias'        => { type => 'HASH'  },
+        'authors-to-skip'     => { type => 'ARRAY' },
     };
 
     my $validated_config = {};
