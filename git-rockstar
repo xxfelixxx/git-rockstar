@@ -11,6 +11,11 @@ source $DIR/.config
 
 GIT_REPO=$1
 GIT_ROCKSTAR_CONFIG=$2
+if [ -z "$GIT_REPO" ]; then
+    echo "usage: $0 /path/to/my/git/repo [ /path/to/config/.git-rockstar ]"
+    exit 1;
+fi
+
 
 $PERL $DIR/collect_git_stats.pl $GIT_REPO $GIT_ROCKSTAR_CONFIG 2> $DIR/.git_rockstar_error > $DIR/.git_rockstar_output
 STATUS=$?
