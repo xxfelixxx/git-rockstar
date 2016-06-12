@@ -38,7 +38,8 @@ LABEL=""
 GITHUB=$( cd $GIT_REPO; git config -l | /bin/grep github )
 if [ -z "$GITHUB" ]; then
     # Not on github
-    LABEL=$( basename $GIT_REPO )
+    NAME=$( basename $GIT_REPO )
+    LABEL="Git Repo [ $NAME ]"
 else
     NAME=$( echo $GITHUB | sed -e 's|^.*github.com[/:]||;' )
     SHORT_NAME=$( echo $NAME | sed -e 's|.git$||;' )
@@ -47,7 +48,7 @@ fi
 
 echo $LABEL
 exit 1;
-$RSCRIPT $DIR/create_graph.R $OUT $LABEL 2> $ERR2 > $OUT2
+$RSCRIPT $DIR/create_graph.R $OUT "'$LABEL'" 2> $ERR2 > $OUT2
 STATUS=$?
 if [ "$STATUS" -ne 0 ]; then
     echo "Problems running create_graph.R!"

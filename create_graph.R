@@ -1,6 +1,6 @@
 # R script to create a graph of code changes per day vs time
 #
-# usage: Rscript create_graph.R data.csv
+# usage: Rscript create_graph.R data.csv "description of git repo"
 #
 
 # Tweakable Parameters
@@ -14,6 +14,7 @@ points_character_cex             <- 0.05
 # Parse command line options
 args <- commandArgs( trailingOnly = TRUE )
 filename = args[1]
+git_repo = args[2]
 
 # Fetch data
 d <- read.csv( filename, head = TRUE, sep=":" )
@@ -75,7 +76,7 @@ plot( xlimit, c(NaN,NaN),
       xlab="",
       type="l",
       col="#FFFFFFFF",
-      main="Code Changes",
+      main=paste("Code Changes on ", git_repo ,sep="")
       sub=sprintf("%1d Non-Merge Commits", length(d$total)),
       yaxt="n",
       xaxt="n",
