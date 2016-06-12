@@ -72,7 +72,9 @@ for ( i in c( iauthors ) ) {
 }
 
 # leave room for labels
-xlimit <- c(min(d$date), max(d$date) + 1.5*365)
+dmin <- min(d$date)
+dmax <- max(d$date)
+xlimit <- c(dmin, dmax + 0.20 * diff( c( as.numeric(dmin), as.numeric(dmax) ) ) )
 
 # Round up to nearest 0.1 of the significant digit
 significant <- floor( log10( ymax ) ) - 1
