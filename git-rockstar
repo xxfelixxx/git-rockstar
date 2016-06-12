@@ -47,7 +47,7 @@ else
 fi
 
 echo $LABEL
-exit 1;
+
 $RSCRIPT $DIR/create_graph.R $OUT "'$LABEL'" 2> $ERR2 > $OUT2
 STATUS=$?
 if [ "$STATUS" -ne 0 ]; then
