@@ -109,6 +109,8 @@ sub process {
     my $ignore_dirs = $config_data->{"ignore-dir"} || [];
     my $ignore_file_patterns = $config_data->{"ignore-file-pattern"} || [];
     my $ignore_revert = $config_data->{"ignore-revert"} || 1; # default is to ignore
+    my $authors_to_skip = $config_data->{"authors-to-skip"} || [];
+    return if any { $_ eq $author } @$authors_to_skip;
     for my $line ( split /\n/, $record ) {
         next unless $line =~ m|^(\d+)\s+(\d+)\s+(\S+)|;
         my ($adds, $deletes, $filename) = ($1, $2, $3);
