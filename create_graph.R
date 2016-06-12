@@ -14,7 +14,12 @@ points_character_cex             <- 0.05
 # Parse command line options
 args <- commandArgs( trailingOnly = TRUE )
 filename = args[1]
-git_repo = args[2]
+git_repo_title = args[2]
+
+if ( is.na( filename) || is.na( git_repo_title ) ) {
+    write("usage: Rscript create_graph.R data.csv 'description of git repo'", stdout())
+    quit(save="no")
+}
 
 # Fetch data
 d <- read.csv( filename, head = TRUE, sep=":" )
@@ -76,7 +81,7 @@ plot( xlimit, c(NaN,NaN),
       xlab="",
       type="l",
       col="#FFFFFFFF",
-      main=paste("Code Changes on ", git_repo ,sep="")
+      main=git_repo_title,
       sub=sprintf("%1d Non-Merge Commits", length(d$total)),
       yaxt="n",
       xaxt="n",

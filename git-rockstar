@@ -39,11 +39,11 @@ GITHUB=$( cd $GIT_REPO; git config -l | /bin/grep github )
 if [ -z "$GITHUB" ]; then
     # Not on github
     NAME=$( basename $GIT_REPO )
-    LABEL="Git Repo [ $NAME ]"
+    LABEL="Code Changes for Git Repo [ $NAME ]"
 else
     NAME=$( echo $GITHUB | sed -e 's|^.*github.com[/:]||;' )
     SHORT_NAME=$( echo $NAME | sed -e 's|.git$||;' )
-    LABEL="Github [ $SHORT_NAME ]"
+    LABEL="Code Changes for Github [ $SHORT_NAME ]"
 fi
 
 echo $LABEL
