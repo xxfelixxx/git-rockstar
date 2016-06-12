@@ -10,6 +10,8 @@ minimum_changes_for_author_label <- 1000
 author_label_cex                 <- 0.4
 points_character                 <- 20
 points_character_cex             <- 0.05
+maximum_x_labels                 <- 20
+maximum_y_labels                 <- 20
 
 # Parse command line options
 args <- commandArgs( trailingOnly = TRUE )
@@ -91,6 +93,11 @@ plot( xlimit, c(NaN,NaN),
 )
 
 xt  <- seq(0, ymax, 10**significant)
+# Fix if too many labels
+if ( length(xt) > maximum_y_labels) {
+    skip <- ceiling( length(xt) / maximum_y_labels)
+    xt <- xt[ seq( 1, length(xt), skip) ]
+}
 xtl <- xt
 for ( i in c(1:length(xt)) ) {
     value <- xt[i]
@@ -112,6 +119,12 @@ years <- as.numeric( substr( as.character( xlimit ), 1, 4 ) )
 years[2] = ifelse( years[2] == years[1], years[2] + 1, years[2] )
 
 yvec <- years[1]:years[2]
+# Fix if too many labels
+if ( length(yvec) > maximum_x_labels) {
+    skip <- ceiling( length(yvec) / maximum_x_labels)
+    yvec <- yvec[ seq( 1, length(yvec), skip) ]
+}
+
 yt <- as.Date( paste( yvec, "-01-01", sep='' ) )
 axis(1, at=yt, labels=yvec, las=2)
 
