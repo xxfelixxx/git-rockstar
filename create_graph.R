@@ -141,11 +141,14 @@ for ( i in c(iauthors) ) {
     if (max(yy) > minimum_changes_for_author_label ) {
         # pos=4 means align left
         text( xx[ length(xx) ], yy[ length(yy) ],
-             sprintf("%s [ %s cpd ]", author, cpd),
+             sprintf("%s [ %s mcpd ]", author, cpd),
              pos=4,
              cex=author_label_cex,
              col=C[ic])
     }
 }
+
+# pos=3 means above
+text( mean(xlimit), 0.99*ymax, "mcpd - median changes per day", pos=3, cex=0.7)
 
 dev.off()
