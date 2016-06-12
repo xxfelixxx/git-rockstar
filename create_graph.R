@@ -21,6 +21,9 @@ if ( is.na( filename) || is.na( git_repo_title ) ) {
     quit(save="no")
 }
 
+# Remove quotes
+git_repo_title <- gsub("'", "", git_repo_title)
+
 # Fetch data
 d <- read.csv( filename, head = TRUE, sep=":" )
 
