@@ -26,8 +26,9 @@ if ( is.na( filename) || is.na( git_repo_title ) ) {
 # Remove quotes
 git_repo_title <- gsub("'", "", git_repo_title)
 
-# Fetch data
-d <- read.csv( filename, head = TRUE, sep="\t" )
+# Fetch data, quote="" disable quoting, fixing the 'EOF within quoted string' message
+# http://stackoverflow.com/questions/17414776/read-csv-warning-eof-within-quoted-string-prevents-complete-reading-of-file
+d <- read.csv( filename, head = TRUE, sep="\t", quote="" )
 
 d$date <- as.Date( d$date, "%Y-%m-%d" )
 
