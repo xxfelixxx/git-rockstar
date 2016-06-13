@@ -6,7 +6,7 @@
 # Tweakable Parameters
 minimum_commits                  <- 10
 n_days_to_filter                 <- 11
-minimum_changes_for_author_label <- 1000
+top_n_authors                    <- 20
 author_label_cex                 <- 0.4
 points_character                 <- 20
 points_character_cex             <- 0.05
@@ -67,10 +67,16 @@ filled <- !unlist( lapply( dd, is.null ) )
 iauthors <- ( 1:nauthors )[filled]
 C <- rainbow( length( iauthors ) )
 
+all_authors <- c()
 ymax <- 0
 for ( i in c( iauthors ) ) {
-    ymax <- max( ymax, max( dd[[i]]$y ) )
+    max_author <- max( dd[[i]]$y )
+    all_authors <- c(all_authors, max_author)
+    ymax <- max( ymax, max_author )
 }
+
+minimum_changes_for_author_label <- (sort(all_authors, decreasing=TRUE))[top_n_authors]
+minimum_changes_for_author_label <- if( is.na(minimum_changes_for_author_label) ) 0 else minimum_changes_for_author_label
 
 # leave room for labels
 dmin <- min(d$date)
@@ -141,7 +147,7 @@ for ( i in c(iauthors) ) {
     points( xx, yy, col=C[i], pch=points_character, cex=points_character_cex )
     
     # Do not bother labelling authors with fewer than 1000 total changes.
-    if (max(yy) > minimum_changes_for_author_label ) {
+    if (max(yy) >= minimum_changes_for_author_label ) {
         # pos=4 means align left
         text( xx[ length(xx) ], yy[ length(yy) ],
              sprintf("%s [ %s mcpd ]", author, cpd),
