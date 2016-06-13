@@ -19,8 +19,12 @@ chdir $git_repo;
 my $config = $ARGV[1] || join('/',$git_repo, '.git-rockstar');
 my $config_data = parse_config( $config );
 
+chomp(my $head = `git branch -r | grep origin/HEAD`);
+#   origin/HEAD -> origin/master
+my ($master_branch) = $head =~ m|^.*-> (\w+)\s*$|;
+
 # IN MASTER
-my $cmd = 'git log origin/master --no-merges --numstat --date=short|';
+my $cmd = 'git log ' . $master_branch . ' --no-merges --numstat --date=short|';
 open my $fh, $cmd
     or die "Unable to run '$cmd' : $!";
 
@@ -41,7 +45,7 @@ close $fh;
 process_in_master($record); # Last one
 
 # NOT IN MASTER
-$cmd = 'git rev-list --all --not origin/master --no-merges | xargs -L1 git log -n1 --numstat --date=short |';
+$cmd = 'git rev-list --all --not ' . $master_branch . ' --no-merges | xargs -L1 git log -n1 --numstat --date=short |';
 open $fh, $cmd
     or die "Unable to run '$cmd' : $!";
 
