@@ -81,7 +81,7 @@ xlimit <- c(dmin, dmax + 0.20 * diff( c( as.numeric(dmin), as.numeric(dmax) ) ) 
 significant <- floor( log10( ymax ) ) - 1
 ymax <- 10**significant * ceiling( ymax / 10**significant )
 
-pdf(file="git_rockstar.pdf")
+svg(file="git_rockstar.svg")
 
 plot( xlimit, c(NaN,NaN),
       ylim=c(1,ymax),
