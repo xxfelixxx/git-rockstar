@@ -26,5 +26,5 @@ Example
 
     $ git-rockstar julia
 
-[perl5 rockstars](https://github.com/xxfelixxx/git-rockstar/blob/master/images/julia_rockstar.svg)
+[julia rockstars](https://github.com/xxfelixxx/git-rockstar/blob/master/images/julia_rockstar.svg)
 
