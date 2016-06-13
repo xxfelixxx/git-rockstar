@@ -20,5 +20,5 @@ Lorem Ipsum
     $ git-rockstar git
 
 ------------------
-[git-rockstar](https://github.com/xxfelixxx/git-rockstar/blob/master/images/perl5-rockstar.svg)
+[git-rockstar](https://github.com/xxfelixxx/git-rockstar/blob/master/images/perl5_rockstar.svg)
 
