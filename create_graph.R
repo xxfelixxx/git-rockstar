@@ -134,6 +134,8 @@ if ( length(yvec) > maximum_x_labels) {
     yvec <- yvec[ seq( 1, length(yvec), skip) ]
 }
 
+yymax <- as.numeric( substr( as.character( dmax ), 1, 4 ) ) + 1
+yvec <- yvec[ yvec <= yymax ]
 yt <- as.Date( paste( yvec, "-01-01", sep='' ) )
 axis(1, at=yt, labels=yvec, las=2)
 
