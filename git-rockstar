@@ -42,7 +42,7 @@ if [ -z "$GITHUB" ]; then
     LABEL="Code Changes for Git Repo [ $NAME ]"
 else
     NAME=$( echo $GITHUB | sed -e 's|^.*github.com[/:]||;' )
-    SHORT_NAME=$( echo $NAME | sed -e 's|.git$||;' )
+    SHORT_NAME=$( echo $NAME | sed -e 's|\.git$||;' )
     LABEL="Code Changes for Github [ $SHORT_NAME ]"
 fi
 
