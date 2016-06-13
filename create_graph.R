@@ -5,7 +5,7 @@
 
 # Tweakable Parameters
 minimum_commits                  <- 10
-n_days_to_filter                 <- 11
+n_days_to_filter                 <- 30
 top_n_authors                    <- 20
 author_label_cex                 <- 0.4
 points_character                 <- 20
