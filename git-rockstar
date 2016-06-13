@@ -57,4 +57,4 @@ if [ "$STATUS" -ne 0 ]; then
 fi
 
 rm $OUT $OUT2 $ERR $ERR2
-echo "Created PDF: $DIR/git_rockstar.pdf"
+echo "Created SVG: $DIR/git_rockstar.svg"
