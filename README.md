@@ -20,3 +20,11 @@ Example
 
 [perl5 rockstars](https://github.com/xxfelixxx/git-rockstar/blob/master/images/perl5_rockstar.svg)
 
+-----------
+
+    $ git clone git@github.com:JuliaLang/julia
+
+    $ git-rockstar julia
+
+[perl5 rockstars](https://github.com/xxfelixxx/git-rockstar/blob/master/images/julia_rockstar.svg)
+
