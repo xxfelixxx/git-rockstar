@@ -5,7 +5,7 @@ Graph all git contributions over time to find your rockstars!
 
 Name
 -----
-Lorem Ipsum
+Git Rockstar
 
 Version
 ---------
@@ -13,12 +13,10 @@ Version 0.01
 
 Example
 -----------
-Lorem Ipsum
 
-    $ git clone git@github.com:git/git
+    $ git clone git@github.com:Perl/perl5
 
-    $ git-rockstar git
+    $ git-rockstar perl
 
-------------------
-[git-rockstar](https://github.com/xxfelixxx/git-rockstar/blob/master/images/perl5_rockstar.svg)
+[perl5 rockstars](https://github.com/xxfelixxx/git-rockstar/blob/master/images/perl5_rockstar.svg)
 
