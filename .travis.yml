@@ -8,6 +8,7 @@ perl:
 before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -y r-base
+  - cpan JSON
 install:
   - ./configure
 script:
