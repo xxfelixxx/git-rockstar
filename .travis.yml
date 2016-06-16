@@ -7,7 +7,7 @@ perl:
   - "5.14"
 before_install:
   - sudo apt-get -qq update
-  - sudo apt-get install -y R Rscript
+  - sudo apt-get install -y r-base
 install:
   - ./configure
 script:
