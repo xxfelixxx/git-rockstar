@@ -134,19 +134,31 @@ if ( length(yvec) > maximum_x_labels) {
     yvec <- yvec[ seq( 1, length(yvec), skip) ]
 }
 
+# No more than 1 year into the future
 yymax <- as.numeric( substr( as.character( dmax ), 1, 4 ) ) + 1
 yvec <- yvec[ yvec <= yymax ]
 yt <- as.Date( paste( yvec, "-01-01", sep='' ) )
 axis(1, at=yt, labels=yvec, las=2)
 
+# Plot the author time series
+for ( i in c(iauthors) ) {
+    xx     <- dd[[i]]$x
+    yy     <- dd[[i]]$y
+
+    # col sets the color, pch sets the marker, cex alters the marker size
+    points( xx, yy, col=C[i], pch=points_character, cex=points_character_cex )
+}
+
+# Text labels show go over the dots
 for ( i in c(iauthors) ) {
     xx     <- dd[[i]]$x
     yy     <- dd[[i]]$y
     author <- dd[[i]]$author
     cpd    <- dd[[i]]$cpd
+    color  <- C[i]
 
-    # col sets the color, pch sets the marker, cex alters the marker size
-    points( xx, yy, col=C[i], pch=points_character, cex=points_character_cex )
+    # TODO: Switch for color labels vs black labels
+    color  <- "#000000"
     
     # Do not bother labelling authors with fewer than 1000 total changes.
     if (max(yy) >= minimum_changes_for_author_label ) {
@@ -155,7 +167,7 @@ for ( i in c(iauthors) ) {
              sprintf("%s [ %s mcpd ]", author, cpd),
              pos=4,
              cex=author_label_cex,
-             col=C[ic])
+             col=color)
     }
 }
 
