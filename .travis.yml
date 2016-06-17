@@ -12,6 +12,7 @@ before_install:
   - R --version
 install:
   - ./configure
+  - ./run_tests
 script:
   - ./git-rockstar ./
 
