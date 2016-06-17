@@ -69,9 +69,10 @@ sub collect_data {
             $processing_function->($record);
             # Start of new record
             $record = '';
+            $count++;
         }
         $record .= $_ . "\n";
-        warn '.' if ($count++ % 100 == 0);
+        warn '.' if ($count % 100 == 0);
     }
     close $fh;
     $processing_function->($record); # Last one
