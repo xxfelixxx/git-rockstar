@@ -36,9 +36,12 @@ unique_authors <- unique( d$author )
 nauthors <- length( unique_authors )
 
 max_commit_days <- 0
+total_commits <- 0
 for ( author in unique_authors ) {
-    commit_days <- length( which( d$author == author ))
+    ii <- which( d$author == author )
+    commit_days <- length( ii )
     max_commit_days <- max( max_commit_days, commit_days )
+    total_commits <- total_commits + max( d$total_commits[ ii ] )
 }
 
 dd <- vector( mode="list", length=nauthors )
@@ -54,7 +57,6 @@ for ( author in unique_authors ) {
     # Skip users with few commits
     if( length(xx) < minimum_commits ) next
 
-    cat( author )
     # Median changes per day
     median_changes <- median( diff( d$total_changes[ii] ) )
 
@@ -114,7 +116,7 @@ plot( xlimit, c(NaN,NaN),
       type="l",
       col="#FFFFFFFF",
       main=git_repo_title,
-      sub=sprintf("%1d Non-Merge Commits", length(d$total_changes)),
+      sub=sprintf("%1d Non-Merge Commits", total_commits),
       yaxt="n",
       xaxt="n",
 )
