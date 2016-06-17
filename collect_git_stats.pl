@@ -35,13 +35,13 @@ print_summary_data();
 exit 0;
 
 sub collect_master_data {
-    my $cmd = 'git log origin/master --no-merges --numstat --date=short|';
+    my $cmd = 'git log ' . $master_branch . ' --no-merges --numstat --date=short|';
     collect_data($cmd, \&process_in_master);
 }
 
 sub collect_not_in_master_data {
     my $commits = File::Temp->new();
-    my $cmd = 'git rev-list --all --not origin/master --no-merges >' . $commits;
+    my $cmd = 'git rev-list --all --not ' . $master_branch . ' --no-merges >' . $commits;
     (system($cmd) == 0)
         or die "Unable to run '$cmd' : $!";
 
