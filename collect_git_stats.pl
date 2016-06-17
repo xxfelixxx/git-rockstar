@@ -53,7 +53,7 @@ sub collect_not_in_master_data {
         warn "There are no non-master commits to process!";
     }
 }
-<<<<<<< HEAD
+
 close $fh;
 process_in_master($record); # Last one
 
