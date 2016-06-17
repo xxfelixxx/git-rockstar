@@ -14,14 +14,17 @@ maximum_x_labels                 <- 20
 maximum_y_labels                 <- 20
 
 # Parse command line options
-args <- commandArgs( trailingOnly = TRUE )
-filename = args[1]
-git_repo_title = args[2]
+args           <- commandArgs( trailingOnly = TRUE )
+filename       <- args[1]
+git_repo_title <- args[2]
+svg_filename   <- args[3]
 
 if ( is.na( filename) || is.na( git_repo_title ) ) {
-    write("usage: Rscript create_graph.R data.csv 'description of git repo'", stdout())
+    write("usage: Rscript create_graph.R data.csv 'description of git repo' svg_filename", stdout())
     quit(save="no")
 }
+
+svg_filename <- ifelse( is.na( svg_filename ), "git_rockstar.svg", svg_filename )
 
 # Remove quotes
 git_repo_title <- gsub("'", "", git_repo_title)
@@ -107,7 +110,7 @@ xlimit <- c(dmin, dmax + 0.20 * diff( c( as.numeric(dmin), as.numeric(dmax) ) ) 
 significant <- floor( log10( ymax ) ) - 1
 ymax <- 10**significant * ceiling( ymax / 10**significant )
 
-svg(file="git_rockstar.svg")
+svg(file=svg_filename)
 
 plot( xlimit, c(NaN,NaN),
       ylim=c(1,ymax),
