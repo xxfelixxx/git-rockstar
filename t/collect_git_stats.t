@@ -76,7 +76,7 @@ sub total_commit_check {
         my @commits = author_field_vector( $author, 'total_commits' );
         $total_commits += pop @commits; # Get last (most recent) value
     }
-    ok( $count == $total_commits, "Total Commits For All Authors is Correct" )
+    ok( $count == $total_commits, "Total Commits [ $count ] For All Authors is Correct" )
         or diag("Expected $count commits, but got $total_commits instead");
 }
 
