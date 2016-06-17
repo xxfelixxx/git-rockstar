@@ -22,7 +22,9 @@ my $config_data = parse_config( $config );
 
 chomp(my $head = `git branch -r | grep origin/HEAD`);
 #   origin/HEAD -> origin/master
-my ($master_branch) = $head =~ m|^.*-> (\w+)\s*$|;
+my ($master_branch) = $head =~ m|^.*->\s+(\S+)\s*$|; # Branch names cannot have spaces
+defined $master_branch
+    or die "Unable to grok master branch name from '$head' : $master_branch";
 
 my $authors = {};
 my ($author, $date, $data);
