@@ -15,4 +15,5 @@ install:
   - ./run_tests
 script:
   - ./git-rockstar ./
-
+env:
+  - TRAVIS_GIT_COMMITS=50
