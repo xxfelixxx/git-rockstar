@@ -54,23 +54,6 @@ sub collect_not_in_master_data {
     }
 }
 
-close $fh;
-process_in_master($record); # Last one
-
-# NOT IN MASTER
-$cmd = 'git rev-list --all --not ' . $master_branch . ' --no-merges | xargs -L1 git log -n1 --numstat --date=short |';
-open $fh, $cmd
-    or die "Unable to run '$cmd' : $!";
-
-$count = 0;
-while (<$fh>) {
-    chomp();
-    if (m|^commit |) {
-        process_not_in_master($record);
-        # Start of new record
-        $record = '';
-=======
-
 sub collect_data {
     my ($cmd, $processing_function) = @_;
     open my $fh, $cmd
@@ -87,31 +70,10 @@ sub collect_data {
         }
         $record .= $_ . "\n";
         warn '.' if ($count++ % 100 == 0);
->>>>>>> Refactored master/non-master processing blocks.  Fixed non-master bug.
     }
     close $fh;
     $processing_function->($record); # Last one
 }
-
-
-# # NOT IN MASTER
-# $cmd = 'git rev-list --all --not origin/master --no-merges | xargs -L1 git log -n1 --numstat --date=short |';
-# open $fh, $cmd
-#     or die "Unable to run '$cmd' : $!";
-
-# $count = 0;
-# while (<$fh>) {
-#     chomp();
-#     if (m|^commit |) {
-#         process_not_in_master($record);
-#         # Start of new record
-#         $record = '';
-#     }
-#     $record .= $_ . "\n";
-#     warn '.' if ($count++ % 100 == 0);
-# }
-# close $fh;
-# process_not_in_master($record); # Last one
 
 sub print_summary_data {
 
