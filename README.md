@@ -3,6 +3,8 @@ git-rockstar
 
 Graph all git contributions over time to find your rockstars!
 
+[![Build Status](https://secure.travis-ci.org/xxfelixxx/git-rockstar.svg)](http://travis-ci.org/xxfelixxx/git-rockstar)
+
 Name
 -----
 Git Rockstar
