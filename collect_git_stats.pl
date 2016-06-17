@@ -165,11 +165,15 @@ sub process {
 
         if ($is_merged) {
             $data->{$real_author}->{master}->{$date}->{changes} += $changes;
-            $data->{$real_author}->{master}->{$date}->{commits} += 1;
         } else {
             $data->{$real_author}->{not_master}->{$date}->{changes} += $changes;
-            $data->{$real_author}->{not_master}->{$date}->{commits} += 1;
         }
+    }
+
+    if ($is_merged) {
+        $data->{$real_author}->{master}->{$date}->{commits} += 1;
+    } else {
+        $data->{$real_author}->{not_master}->{$date}->{commits} += 1;
     }
 }
 
