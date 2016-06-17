@@ -1,0 +1,9 @@
+{
+    "ignore-dir" : [ "image" ],
+    "ignore-file-pattern" : [ ".bak", "~" ],
+    "ignore-revert" : "1",
+    "author-alias" : {
+            "Felix" : "Felix Tubiana"
+    },
+    "authors-to-skip" : []
+}
