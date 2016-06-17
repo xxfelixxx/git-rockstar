@@ -32,10 +32,21 @@ d <- read.csv( filename, head = TRUE, sep="\t", quote="" )
 
 d$date <- as.Date( d$date, "%Y-%m-%d" )
 
-nauthors <- length( unique( d$author ) )
+unique_authors <- unique( d$author )
+nauthors <- length( unique_authors )
+
+max_commit_days <- 0
+for ( author in unique_authors ) {
+    commit_days <- length( which( d$author == author ))
+    max_commit_days <- max( max_commit_days, commit_days )
+}
 
 dd <- vector( mode="list", length=nauthors )
 ic <- 1
+
+# For new repos, show all commits (at least 2 for diff to work)
+minimum_commits <- ifelse( max_commit_days < minimum_commits, 2, minimum_commits )
+
 for ( author in unique( d$author ) ) {
     ii <- d$author == author
     xx <- d$date[ii]
