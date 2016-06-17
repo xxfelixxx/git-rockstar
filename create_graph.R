@@ -47,23 +47,30 @@ ic <- 1
 # For new repos, show all commits (at least 2 for diff to work)
 minimum_commits <- ifelse( max_commit_days < minimum_commits, 2, minimum_commits )
 
-for ( author in unique( d$author ) ) {
+for ( author in unique_authors ) {
     ii <- d$author == author
     xx <- d$date[ii]
 
     # Skip users with few commits
     if( length(xx) < minimum_commits ) next
 
+    cat( author )
     # Median changes per day
-    median_changes <- median( diff( d$total[ii] ) )
+    median_changes <- median( diff( d$total_changes[ii] ) )
 
-    # d$total still may have wild jumps if we missed any
+    # filter length must be odd and less than the vector length
+    diff_changes <- diff( d$total_changes[ii] )
+    len_dc <- length(diff_changes)
+    len_dc <- ifelse( len_dc %% 2, len_dc, len_dc - 1)
+    days_to_filter <- ifelse( len_dc < n_days_to_filter, len_dc, n_days_to_filter )
+
+    # d$total_changes still may have wild jumps if we missed any
     # changes that should obviously be ignored
     # ( rename directories, include javascript libraries, perltidy whole files, etc )
-    # diff of d$total gives us a vector of changes per day
+    # diff of d$total_changes gives us a vector of changes per day
     # runmed(...,11) of the result applies an 11-day median filter to smooth it out
-    # cumsum adds it all up, so it is a cumulative vector like the original d$total
-    yy <- cumsum( runmed( diff( d$total[ii] ), n_days_to_filter ) )
+    # cumsum adds it all up, so it is a cumulative vector like the original d$total_changes
+    yy <- cumsum( runmed( diff_changes, days_to_filter ) )
 
     # xx[-1] to shorten xx by one, so it is same length as yy
     dd[[ic]]$x      <- xx[-1]
@@ -107,7 +114,7 @@ plot( xlimit, c(NaN,NaN),
       type="l",
       col="#FFFFFFFF",
       main=git_repo_title,
-      sub=sprintf("%1d Non-Merge Commits", length(d$total)),
+      sub=sprintf("%1d Non-Merge Commits", length(d$total_changes)),
       yaxt="n",
       xaxt="n",
 )
