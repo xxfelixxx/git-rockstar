@@ -16,8 +16,8 @@ if [ -z "$GIT_REPO" ]; then
     exit 1;
 fi
 
-OUT=$DIR/.git_rockstar_output
-ERR=$DIR/.git_rockstar_error
+OUT=$DIR/.git_rockstar_output.$$
+ERR=$DIR/.git_rockstar_error.$$
 echo '' > $OUT
 echo '' > $ERR
 
@@ -29,8 +29,8 @@ if [ "$STATUS" -ne 0 ]; then
     exit 1;
 fi
 
-OUT2=$DIR/.git_rockstar_output2
-ERR2=$DIR/.git_rockstar_error2
+OUT2=$DIR/.git_rockstar_output2.$$
+ERR2=$DIR/.git_rockstar_error2.$$
 echo '' > $OUT2
 echo '' > $ERR2
 
@@ -52,7 +52,7 @@ $RSCRIPT $DIR/create_graph.R $OUT "'$LABEL'" 2> $ERR2 > $OUT2
 STATUS=$?
 if [ "$STATUS" -ne 0 ]; then
     echo "Problems running create_graph.R!"
-    cat $DIR/.git_rockstar_error2
+    cat $ERR2
     exit 1;
 fi
 
