@@ -1,0 +1,12 @@
+#!/bin/bash
+
+source ./.config
+
+TEST_DIR="./t"
+
+FILES=$( echo $TEST_DIR/*.t | sort )
+
+for test_file in $FILES; do
+    echo "Running $test_file";
+    $PERL $test_file;
+done
