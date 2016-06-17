@@ -81,27 +81,40 @@ sub collect_data {
 sub print_summary_data {
 
     print join "\t", 'author', 'date', 'changes_in_master', 'changes_not_in_master',
-        'total_in_master', 'total_not_in_master', 'total', 'percent_in_master';
+        'total_changes_in_master', 'total_changes_not_in_master', 'total_changes',
+        'percent_changes_in_master', 'commits_in_master', 'commits_not_in_master',
+        'total_commits_in_master', 'total_commits_not_in_master', 'total_commits';
     print "\n";
     for my $author ( sort keys %$data ) {
         my $d = $data->{$author};
-        my $total_in_master = 0;
-        my $total_not_in_master = 0;
-        my $total = 0;
+        my $total_changes_in_master = 0;
+        my $total_changes_not_in_master = 0;
+        my $total_commits_in_master = 0;
+        my $total_commits_not_in_master = 0;
+        my $total_commits = 0;
+        my $total_changes = 0;
         my $percent_in_master = 0;
         for my $date (uniq sort (keys %{$d->{master}}, keys %{$d->{not_master}})) {
-            my $master     = $d->{master}->{$date} || 0;
-            my $not_master = $d->{not_master}->{$date} || 0;
-            $total_in_master += $master;
-            $total_not_in_master += $not_master;
-            $total += $master;
-            $total += $not_master;
-            if ($total == 0) {
+            my $master_changes     = $d->{master}->{$date}->{changes}     || 0;
+            my $master_commits     = $d->{master}->{$date}->{commits}     || 0;
+
+            my $not_master_changes = $d->{not_master}->{$date}->{changes} || 0;
+            my $not_master_commits = $d->{not_master}->{$date}->{commits} || 0;
+
+            $total_commits_in_master     += $master_commits;
+            $total_commits_not_in_master += $not_master_commits;
+            $total_commits               += $master_commits + $not_master_commits;
+
+            $total_changes_in_master     += $master_changes;
+            $total_changes_not_in_master += $not_master_changes;
+            $total_changes               += $master_changes + $not_master_changes;
+
+            if ($total_changes == 0) {
                 $percent_in_master = 0;
             } else {
-                $percent_in_master = int ( $total_in_master / $total * 100 );
+                $percent_in_master = int ( $total_changes_in_master / $total_changes * 100 );
             }
-            print join "\t", $author, $date,$master, $not_master, $total_in_master, $total_not_in_master, $total, $percent_in_master;
+            print join "\t", $author, $date, $master_changes, $not_master_changes, $total_changes_in_master, $total_changes_not_in_master, $total_changes, $percent_in_master, $master_commits, $not_master_commits, $total_commits_in_master, $total_commits_not_in_master, $total_commits;
             print "\n";
         }
     }
@@ -151,9 +164,11 @@ sub process {
         }
 
         if ($is_merged) {
-            $data->{$real_author}->{master}->{$date} += $changes;
+            $data->{$real_author}->{master}->{$date}->{changes} += $changes;
+            $data->{$real_author}->{master}->{$date}->{commits} += 1;
         } else {
-            $data->{$real_author}->{not_master}->{$date} += $changes;
+            $data->{$real_author}->{not_master}->{$date}->{changes} += $changes;
+            $data->{$real_author}->{not_master}->{$date}->{commits} += 1;
         }
     }
 }
