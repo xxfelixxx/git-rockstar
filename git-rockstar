@@ -50,7 +50,7 @@ else
 fi
 
 echo $LABEL
-SVG_NAME=$( echo $SHORT_LABEL | perl -pe 's|^.*/||; s|-|_|g; s|\s*$||; $_ .= ".svg"' )
+SVG_NAME=$( echo $SHORT_LABEL | perl -pe 's|^.*/||; s|-|_|g; s|\s*$||; $_ .= "_rockstar.svg"' )
 SVG_TMP=$GIT_REPO/$SVG_NAME
 SVG=$( echo $SVG_TMP | perl -pe 's|//|/|g;' )
 
