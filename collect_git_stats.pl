@@ -2,6 +2,7 @@
 
 use warnings;
 use strict;
+use File::Temp;
 use List::MoreUtils qw( any uniq );
 use JSON qw( decode_json );
 
@@ -23,24 +24,36 @@ chomp(my $head = `git branch -r | grep origin/HEAD`);
 #   origin/HEAD -> origin/master
 my ($master_branch) = $head =~ m|^.*-> (\w+)\s*$|;
 
-# IN MASTER
-my $cmd = 'git log ' . $master_branch . ' --no-merges --numstat --date=short|';
-open my $fh, $cmd
-    or die "Unable to run '$cmd' : $!";
-
+my $authors = {};
 my ($author, $date, $data);
-my $record = '';
-my $count = 0;
-while (<$fh>) {
-    chomp();
-    if (m|^commit |) {
-        process_in_master($record);
-        # Start of new record
-        $record = '';
-    }
-    $record .= $_ . "\n";
-    warn '.' if ($count++ % 100 == 0);
+
+collect_master_data();
+collect_not_in_master_data();
+print_summary_data();
+exit 0;
+
+sub collect_master_data {
+    my $cmd = 'git log origin/master --no-merges --numstat --date=short|';
+    collect_data($cmd, \&process_in_master);
 }
+
+sub collect_not_in_master_data {
+    my $commits = File::Temp->new();
+    my $cmd = 'git rev-list --all --not origin/master --no-merges >' . $commits;
+    (system($cmd) == 0)
+        or die "Unable to run '$cmd' : $!";
+
+    if ( -s $commits ) {
+        # We have non-master commits
+        $cmd = 'cat ' . $commits . ' | xargs -L1 git log -n1 --numstat --date=short |';
+        collect_data($cmd, \&process_not_in_master);
+        unlink $commits
+            or die "Unable to unlink $commits : $!";
+    } else {
+        warn "There are no non-master commits to process!";
+    }
+}
+<<<<<<< HEAD
 close $fh;
 process_in_master($record); # Last one
 
@@ -56,36 +69,76 @@ while (<$fh>) {
         process_not_in_master($record);
         # Start of new record
         $record = '';
-    }
-    $record .= $_ . "\n";
-    warn '.' if ($count++ % 100 == 0);
-}
-close $fh;
-process_not_in_master($record); # Last one
+=======
 
-print join "\t", 'author', 'date', 'changes_in_master', 'changes_not_in_master',
-    'total_in_master', 'total_not_in_master', 'total', 'percent_in_master';
-print "\n";
-for my $author ( sort keys %$data ) {
-    my $d = $data->{$author};
-    my $total_in_master = 0;
-    my $total_not_in_master = 0;
-    my $total = 0;
-    my $percent_in_master = 0;
-    for my $date (uniq sort (keys %{$d->{master}}, keys %{$d->{not_master}})) {
-        my $master     = $d->{master}->{$date} || 0;
-        my $not_master = $d->{not_master}->{$date} || 0;
-        $total_in_master += $master;
-        $total_not_in_master += $not_master;
-        $total += $master;
-        $total += $not_master;
-        if ($total == 0) {
-            $percent_in_master = 0;
-        } else {
-            $percent_in_master = int ( $total_in_master / $total * 100 );
+sub collect_data {
+    my ($cmd, $processing_function) = @_;
+    open my $fh, $cmd
+        or die "Unable to run '$cmd' : $!";
+
+    my $record = '';
+    my $count = 0;
+    while (<$fh>) {
+        chomp();
+        if (m|^commit |) {
+            $processing_function->($record);
+            # Start of new record
+            $record = '';
         }
-        print join "\t", $author, $date,$master, $not_master, $total_in_master, $total_not_in_master, $total, $percent_in_master;
-        print "\n";
+        $record .= $_ . "\n";
+        warn '.' if ($count++ % 100 == 0);
+>>>>>>> Refactored master/non-master processing blocks.  Fixed non-master bug.
+    }
+    close $fh;
+    $processing_function->($record); # Last one
+}
+
+
+# # NOT IN MASTER
+# $cmd = 'git rev-list --all --not origin/master --no-merges | xargs -L1 git log -n1 --numstat --date=short |';
+# open $fh, $cmd
+#     or die "Unable to run '$cmd' : $!";
+
+# $count = 0;
+# while (<$fh>) {
+#     chomp();
+#     if (m|^commit |) {
+#         process_not_in_master($record);
+#         # Start of new record
+#         $record = '';
+#     }
+#     $record .= $_ . "\n";
+#     warn '.' if ($count++ % 100 == 0);
+# }
+# close $fh;
+# process_not_in_master($record); # Last one
+
+sub print_summary_data {
+
+    print join "\t", 'author', 'date', 'changes_in_master', 'changes_not_in_master',
+        'total_in_master', 'total_not_in_master', 'total', 'percent_in_master';
+    print "\n";
+    for my $author ( sort keys %$data ) {
+        my $d = $data->{$author};
+        my $total_in_master = 0;
+        my $total_not_in_master = 0;
+        my $total = 0;
+        my $percent_in_master = 0;
+        for my $date (uniq sort (keys %{$d->{master}}, keys %{$d->{not_master}})) {
+            my $master     = $d->{master}->{$date} || 0;
+            my $not_master = $d->{not_master}->{$date} || 0;
+            $total_in_master += $master;
+            $total_not_in_master += $not_master;
+            $total += $master;
+            $total += $not_master;
+            if ($total == 0) {
+                $percent_in_master = 0;
+            } else {
+                $percent_in_master = int ( $total_in_master / $total * 100 );
+            }
+            print join "\t", $author, $date,$master, $not_master, $total_in_master, $total_not_in_master, $total, $percent_in_master;
+            print "\n";
+        }
     }
 }
 
@@ -140,7 +193,6 @@ sub process {
     }
 }
 
-my $authors = {};
 sub get_real {
     my ($author) = @_;
     
