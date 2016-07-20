@@ -53,6 +53,7 @@ ic <- 1
 # For new repos, show all commits (at least 2 for diff to work)
 minimum_commits <- ifelse( max_commit_days < minimum_commits, 2, minimum_commits )
 
+data <- data.frame()
 for ( author in unique_authors ) {
     ii <- d$author == author
     xx <- d$date[ii]
@@ -83,8 +84,14 @@ for ( author in unique_authors ) {
     dd[[ic]]$author <- author
     dd[[ic]]$cpd    <- median_changes
 
+    rows <- data.frame(author, median_changes, xx[-1],yy)
+    data <- rbind( data, rows )
     ic <- ic + 1
 }
+
+colnames(data) <- c( 'Author', 'Median Changes', 'Date', 'Changes' )
+outfile <- filename
+write.table(data, file='data.tsv', quote=TRUE, sep='\t', row.names=FALSE)
 
 filled <- !unlist( lapply( dd, is.null ) )
 iauthors <- ( 1:nauthors )[filled]
