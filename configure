@@ -16,7 +16,7 @@ function check_installed {
     echo "${PROG^^}=$LOC" >> $CONFIG
 }
 
-for prog in perl R Rscript xargs git; do
+for prog in perl R Rscript xargs git wget; do
     check_installed $prog
 done
 
