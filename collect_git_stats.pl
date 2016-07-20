@@ -141,7 +141,7 @@ sub process {
     my $real_author = get_real($author);
     my ($date) = $record =~ m|Date:\s+(\d+-\d+-\d+)|s;
     $date or die "No date!\n$record";
-    next if $date eq '1970-01-01'; # unix 0 time, clearly a mistake somewhere
+    return if $date eq '1970-01-01'; # unix 0 time, clearly a mistake somewhere
     my $ignore_dirs = $config_data->{"ignore-dir"} || [];
     my $ignore_file_patterns = $config_data->{"ignore-file-pattern"} || [];
     my $ignore_revert = $config_data->{"ignore-revert"} || 1; # default is to ignore
