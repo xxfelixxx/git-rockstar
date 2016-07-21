@@ -89,7 +89,16 @@ for ( author in unique_authors ) {
     ic <- ic + 1
 }
 
-colnames(data) <- c( 'Author', 'Median Changes', 'Date', 'Changes' )
+ranking <- sort(unique(data$median_changes), decreasing=TRUE)
+data$author_rank <- 0
+for ( author in unique_authors ) {
+    ii <- which(data$author == author)
+    median_changes=data$median_changes[ii][1]
+    author_rank <- which( ranking == median_changes )
+    data$author_rank[ii] <- t(rep(author_rank,length(ii)))
+}
+colnames(data) <- c( 'Author', 'Median Changes', 'Date', 'Total Changes', 'Ranking' )
+
 outfile <- filename
 write.table(data, file='data.tsv', quote=TRUE, sep='\t', row.names=FALSE)
 
