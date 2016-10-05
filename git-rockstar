@@ -1,10 +1,13 @@
 #!/bin/bash
 
 DIR=$( dirname $0 )
-$DIR/configure > /dev/null
+CONFIGURE_OUTPUT=$DIR/.configure_output
+$DIR/configure > $CONFIGURE_OUTPUT
 STATUS=$?
 if [ "$STATUS" -ne 0 ]; then
     echo "Cannot run git-rockstar!"
+    cat $CONFIGURE_OUTPUT
+    rm -f $CONFIGURE_OUTPUT
     exit 1;
 fi
 source $DIR/.config 
