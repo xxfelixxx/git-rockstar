@@ -73,3 +73,26 @@ Configuration
         "authors-to-skip" : [ "robot_user", "auto_commit_user" ]
     }
 
+Dependencies
+--------------
+
+    R and Rscript
+    git
+    perl and JSON.pm
+    wget
+    xargs
+
+Installing Dependencies on Redhat/Centos
+------------------------------------------
+
+    sudo -s
+    yum install -y R-core                    # available from epel
+    yum install -y perl wget git findutils   # findutils provides xargs
+    yum install -y perl-JSON
+
+Installing Dependencies on Debian
+-----------------------------------
+
+    sudo -s
+    apt-get -qq update
+    apt-get install -y r-base perl-base libjson-perl git-core findutils
