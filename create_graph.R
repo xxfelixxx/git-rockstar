@@ -1,6 +1,10 @@
 # R script to create a graph of code changes per day vs time
 #
-# usage: Rscript create_graph.R data.csv "description of git repo"
+# usage: Rscript create_graph.R data.csv "description of git repo" [ svg_filename ]
+#
+#            data.csv      -  Output of collect_git_stats.pl
+#            description   -  String description used for graph title
+#            svg_filename  -  Output svg filename, defaults to git_rockstar.svg
 #
 
 # Tweakable Parameters
